@@ -19,4 +19,4 @@ jobs:
       - name: Check formatting
         run: cargo fmt --all -- --check
       - name: Targeted unit tests (decoder + transact ingress)
-        run: cargo test --locked --lib -- bridge::solana::decoder node::transact_ingress
+        run: cargo test --lib -- bridge::solana::decoder node::transact_ingress
