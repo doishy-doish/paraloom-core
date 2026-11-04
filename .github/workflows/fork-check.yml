@@ -1,0 +1,22 @@
+name: Fork check (toolchain signal)
+on:
+  push:
+    branches: ["fix-*"]
+jobs:
+  fmt-and-targeted-tests:
+    name: fmt + targeted unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "fork-check"
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      - name: Targeted unit tests (decoder + transact ingress)
+        run: cargo test --locked --lib -- bridge::solana::decoder node::transact_ingress
